@@ -1,0 +1,27 @@
+[
+    {
+      "staffId": "001",
+      "profilePic": "/img/black girl.jpeg",
+      "name": "Fatima",
+      "role": "Intern"
+    },
+    {
+      "staffId": "002",
+      "profilePic": "img/rob.jpeg",
+      "name": "mr ben",
+      "role": "Manager"
+    },
+    {
+      "staffId": "003",
+      "profilePic": "img/tech1.jpeg",
+      "name": "mr sly",
+      "role": "Developer"
+    },
+    {
+      "staffId": "004",
+      "profilePic": "img/tech2.jpeg",
+      "name": "mr chimdi",
+      "role": "Developer"
+    }
+  ]
+  
