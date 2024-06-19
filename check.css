@@ -207,11 +207,9 @@ thead {
 }
 
 .out{
-  width: ;
   height: 40px;
   background-color: red;
   font-size: larger;
-  color ;
   border-radius: 10px;
 }
 
@@ -254,7 +252,6 @@ button{
 
   text-decoration: none;
   color:black;
-  font-size: ;
 
 
 }
