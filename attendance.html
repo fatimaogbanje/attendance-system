@@ -15,7 +15,8 @@
       </header>
 
       <main>
-        <table  width="900"  >
+        
+        <table  width="900" id="attendance-table" >
           <thead>
             <tr>
               <th>Date</th>
@@ -26,42 +27,82 @@
               <th>Hours</th>
             </tr>
           </thead>
-          <tbody id="attendance-records" >
-            <tr> 
-              <td ><button>June 7, 2024</button></td>
-              <td id="user-name"><button>Fatima</button></td>
-              <td><button>intern</button></td>
+          <tbody >
+            <!-- <tr> 
+              <td ><button class="tbutton">June 7, 2024</button></td>
+              <td id="user-name"><button class="tbutton">Fatima</button></td>
+              <td><button class="tbutton">intern</button></td>
 
-              <td><button>9:00 AM</button></td>
-              <td><button class="out">checkOut</button></td>
-              <td><button >1.5</button></td>
+              <td><button class="tbutton">9:00 AM</button></td>
+              <td><button class="out" onclick="checkOut()">checkOut</button></td>
+              <td><button  class="tbutton">1.5</button></td>
             </tr>
-            <tr>
-              <td><button>June 6, 2024</button></td>
+            <!-- <tr> -->
+              <!-- <td><button>June 6, 2024</button></td>
               <td><button>Fatima</button></td>
               <td><button>inern</button></td>
               <td><button>9:00 AM</button></td>
               <td><button class="out">checkOut</button></td>
               <td><button>8.0</button></td>
-            </tr> 
+            </tr>  --> -->
           </tbody>
         </table>
        <a href="dashboard.html"><button class=" back">BACK</button></a> 
       </main>
     </div>
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        const checkOutButtons = document.querySelectorAll('.out');
+          loadAttendanceHistory();
 
-        checkOutButtons.forEach(button => {
-          button.addEventListener('click', function() {
-            const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            button.textContent = currentTime;
+          const checkOutButtons = document.querySelectorAll('.out');
+
+          checkOutButtons.forEach(button => {
+              button.addEventListener('click', function() {
+                  const now = new Date();
+                  const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  const lastCheckIn = new Date(localStorage.getItem('lastCheckIn'));
+                  const totalHours = ((now - lastCheckIn) / (1000 * 60 * 60)).toFixed(2);
+
+                  button.textContent = currentTime;
+                  button.parentElement.nextElementSibling.textContent = totalHours;
+
+                  // Update the record in localStorage
+                  let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+                  const index = attendanceRecords.findIndex(record => record.checkInTime === button.previousElementSibling.textContent);
+                  if (index !== -1) {
+                      attendanceRecords[index].checkOutTime = currentTime;
+                      attendanceRecords[index].totalHours = totalHours;
+                      localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+                  }
+              });
           });
-        });
       });
-    </script>
-    <!-- <script src="check.js"></script> -->
-    <script src="at.js"></script>
+
+      function loadAttendanceHistory() {
+          const attendanceHistory = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+          const tableBody = document.getElementById('attendance-table').querySelector('tbody');
+          tableBody.innerHTML = '';
+
+          attendanceHistory.forEach(record => {
+              const newRow = document.createElement('tr');
+              newRow.innerHTML = `
+                  <td><button class="tbutton">${record.date}</button></td>
+                  <td><button class="tbutton">${record.name}</button></td>
+                  <td><button class="tbutton">${record.role}</button></td>
+                  <td><button class="tbutton">${record.checkInTime}</button></td>
+                  <td><button class="out">${record.checkOutTime === 'N/A' ? 'Check-Out' : record.checkOutTime}</button></td>
+                  <td><button class="tbutton">${record.totalHours}</button></td>
+              `;
+              tableBody.appendChild(newRow);
+          });
+      }
+      
+      </script>
+
+  <script src="at.js"></script>
+  
+    
   </body>
-</html>
+  </html>
+

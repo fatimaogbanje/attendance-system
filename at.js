@@ -1,6 +1,15 @@
+function updateDateTime() {
+    const now = new Date();
+    document.getElementById('current-date').textContent = now.toLocaleDateString();
+    document.getElementById('current-time').textContent = now.toLocaleTimeString();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     updateDateTime();
     setInterval(updateDateTime, 1000); // Update the time every second
+    document.getElementById('admin-link').style.display = 'block';
+    document.getElementById('attendance-history-link').style.display = 'block';
+    
 });
 
 function login() {
@@ -17,17 +26,24 @@ function login() {
     }
 }
 
+
+
+
+
+
 function logout() {
     document.getElementById('dashboard').style.display = 'none';
     document.querySelector('.login-page').style.display = 'block';
+     // Re-enable the Check-In button when logging out
+     document.querySelector('.checkin').disabled = false;
 }
 
-function updateCurrentStaffInfo(userName, userRole, currentDate, currentTime) {
-    document.getElementById('user-name').textContent = userName;
-    document.getElementById('user-role').textContent = userRole;
-    document.getElementById('current-date').textContent = currentDate;
-    document.getElementById('current-time').textContent = currentTime;
-}
+// function updateCurrentStaffInfo(userName, userRole, currentDate, currentTime) {
+//     document.getElementById('user-name').textContent = userName;
+//     document.getElementById('user-role').textContent = userRole;
+//     document.getElementById('current-date').textContent = currentDate;
+//     document.getElementById('current-time').textContent = currentTime;
+// }
 
 function checkIn() {
     const now = new Date();
@@ -41,24 +57,27 @@ function checkIn() {
     // Update last check-in time
     document.getElementById('last-check-in').textContent = currentTime;
 
-    // Append details to the attendance history table
-    const attendanceRecords = document.getElementById('attendance-records').querySelector('tbody');
-    console.log("attendance-records")
-    const newRow = document.createElement('tr');
-
-    newRow.innerHTML = `
-        <td>${currentDate}</td>
-        <td>${userName}</td>
-        <td>${userRole}</td>
-        <td>${currentTime}</td>
-        <td><button class="out" onclick="checkOut(this)">Check Out</button></td>
-        <td>0.0</td>
-    `;
-
-    attendanceRecords.appendChild(newRow);
-    console.log (newRow)
-
+     // Store attendance details in localStorage
     localStorage.setItem('lastCheckIn', now);
+
+    let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+    attendanceRecords.push({
+        date: currentDate,
+        name: userName,
+        role: userRole,
+        checkInTime: currentTime,
+        checkOutTime: 'N/A',
+        totalHours: '0.0'
+    });
+    localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+
+
+    // Disable the Check-In button
+    document.querySelector('.checkin').disabled = true;
+
+    // Show success alert
+    alert("Check-In successful at " + currentTime);
+
 }
 
 function checkOut(button) {
@@ -73,13 +92,42 @@ function checkOut(button) {
     // Update last check-out time
     document.getElementById('last-check-out').textContent = currentTime;
     document.getElementById('total-hours').textContent = `${totalHours} hrs`;
+    
+    // Update the attendance record in localStorage
+    let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+    const index = attendanceRecords.findIndex(record => record.checkInTime === button.previousElementSibling.textContent);
+    if (index !== -1) {
+        attendanceRecords[index].checkOutTime = currentTime;
+        attendanceRecords[index].totalHours = totalHours;
+        localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+    }
 }
 
-function updateDateTime() {
-    const now = new Date();
-    document.getElementById('current-date').textContent = now.toLocaleDateString();
-    document.getElementById('current-time').textContent = now.toLocaleTimeString();
+function showAttendanceHistory() {
+    const attendanceHistory = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+    const tableBody = document.getElementById('attendance-table').querySelector('tbody');
+    tableBody.innerHTML = '';
+
+    attendanceHistory.forEach(record => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><button class="tbutton">${record.date}</button></td>
+            <td><button class="tbutton">${record.name}</button></td>
+            <td><button class="tbutton">${record.role}</button></td>
+            <td><button class="tbutton">${record.checkInTime}</button></td>
+            <td><button class="out" onclick="checkOut(this)">Check-Out</button></td>
+            <td><button class="tbutton">${record.totalHours}</button></td>
+        `;
+        tableBody.appendChild(newRow);
+    });
+
+    document.getElementById('search-form').style.display = 'none';
+    document.getElementById('staff-info').style.display = 'none';
+    document.getElementById('attendance-history').style.display = 'block';
 }
+
+
+  
 
 const staffData = [
     {
@@ -118,6 +166,11 @@ function searchStaff(event) {
         document.getElementById('user-name').textContent = staff.name;
         document.getElementById('user-role').textContent = staff.role;
         document.getElementById('staff-info').style.display = 'block';
+        document.getElementById('search-form').style.display = 'none';
+        document.getElementById('admin-link').style.display = 'none';
+        document.getElementById('attendance-history-link').style.display = 'none';
+
+        
     } else {
         alert('Staff not found');
     }

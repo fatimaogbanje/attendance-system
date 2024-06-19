@@ -29,7 +29,6 @@ function updateCurrentStaffInfo(userName, userRole, currentDate, currentTime) {
     document.getElementById('current-date').textContent = currentDate;
     document.getElementById('current-time').textContent = currentTime;
     console.log('current-staff-role') 
-
 }
 
 
@@ -121,6 +120,7 @@ function searchStaff(event) {
         document.getElementById('user-name').textContent = staff.name;
         document.getElementById('user-role').textContent = staff.role;
         document.getElementById('staff-info').style.display = 'block';
+        document.getElementById('search-form').style.display = 'none';
     } else {
         alert('Staff not found');
     }

@@ -48,6 +48,13 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  
+  
+}
+
+.attendancehistory{
+  background-image: url(img/bluepaper.jpeg);
+  background-size: cover;
 }
 
 .form {
@@ -196,22 +203,58 @@ td {
 thead {
   background: #333;
   color: #fff;
+  font-size: larger
 }
 
 .out{
   width: ;
   height: 40px;
   background-color: red;
-  color: #ddd;
+  font-size: larger;
+  color ;
   border-radius: 10px;
 }
 
 button{
   height: 40px;
+  
+}
+.tbutton{
+  background-color: aliceblue;
+  border-radius: 5px;
+  font-size: larger;
+
 }
 
 .back{
   margin-left: 450px;
   margin-top: 20px;
   
+}
+.adminbtn{
+  float:right;
+  margin-bottom: 40px;
+  width: 100px;
+  border-radius: 5px;
+  
+
+}
+
+.admin{
+  
+  
+  
+  margin-top: 10px;
+  margin-bottom: 40px;
+
+
+  
+  
+  
+
+  text-decoration: none;
+  color:black;
+  font-size: ;
+
+
 }

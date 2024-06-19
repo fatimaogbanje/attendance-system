@@ -25,11 +25,19 @@
             </div>
         </header> 
 
-        <div>
+        <div >
             <form id="search-form" onsubmit="searchStaff(event)">
                 <label for="">Staff ID:<input type="search" id="staff-id" name="search" class="staff"> 
                     <input class="search" type="submit" value="search"> </label>
             </form>
+            <nav>
+                <ul>
+                    <li><a href="admin.html" id="admin-link" >Admin</a></li>
+                    <li><a href="attendance.html" id="attendance-history-link" onclick="showAttendanceHistory()">Attendance History</a></li>
+                </ul>
+            </nav>
+            
+            
         </div>
 
         <main id="staff-info" style="display: none;">
@@ -45,10 +53,10 @@
 
             <nav>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="attendance.html">Attendance History</a></li>
+                    <li><a href="#" >Home</a></li>
+                    <!-- <li><a href="attendance.html" id="attendance">Attendance History</a></li> -->
                     <li><a href="#">Settings</a></li>
-                    <li><a href="#" onclick="logout()">Logout</a></li>
+                    <li><a href="dashboard.html" onclick="logout()">Logout</a></li>
                 </ul>
             </nav>
         </main>
