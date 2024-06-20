@@ -51,34 +51,45 @@ function checkIn() {
     const userRole = document.getElementById('user-role').textContent;
     const currentDate = now.toLocaleDateString();
     const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    console.log( checkIn);
-
-    // Update last check-in time
-    document.getElementById('last-check-in').textContent = currentTime;
-
-     // Store attendance details in localStorage
-    localStorage.setItem('lastCheckIn', now);
-
+  
     let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
-    attendanceRecords.push({
-        date: currentDate,
-        name: userName,
-        role: userRole,
-        checkInTime: currentTime,
-        checkOutTime: 'N/A',
-        totalHours: '0.0'
-    });
+  
+    // Check if there's already a check-in for today
+    const todayRecord = attendanceRecords.find(record => record.name === userName && record.date === currentDate);
+    if (todayRecord) {
+      alert("You've already checked in today!");
+      return;
+    }
+  
+    // Update last check-in time in the DOM
+    document.getElementById('last-check-in').textContent = currentTime;
+  
+    // Store the current check-in time in localStorage
+    localStorage.setItem('lastCheckIn', now);
+  
+    // Create a new attendance record
+    const newRecord = {
+      date: currentDate,
+      name: userName,
+      role: userRole,
+      checkInTime: currentTime,
+      checkOutTime: 'N/A',
+      totalHours: '0.00'
+    };
+  
+    // Add the new record to the attendanceRecords array
+    attendanceRecords.push(newRecord);
     localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
-
-
+  
+    // Reload the attendance history
+    loadAttendanceHistory();
+  
     // Disable the Check-In button
     document.querySelector('.checkin').disabled = true;
-
+  
     // Show success alert
     alert("Check-In successful at " + currentTime);
-
-}
+  }
 
 function checkOut(button) {
     const now = new Date();
@@ -153,7 +164,36 @@ const staffData = [
         "profilePic": "img/tech2.jpeg",
         "name": "Mr Chimdi",
         "role": "Developer"
-    }
+    },
+    {
+      "staffId": "005",
+        "profilePic": "img/tech4.jpeg",
+        "name": "joy",
+        "role": "nails"
+      
+    },
+    {
+    "staffId": "006",
+        "profilePic": "img/chip.jpeg",
+        "name": "rita",
+        "role": "nails"
+    },
+    {
+        "staffId": "007",
+          "profilePic": "img/tech3.jpeg",
+          "name": "pearl",
+          "role": "warrror"
+        
+      },
+      {
+        "staffId": "008",
+          "profilePic": "img/tech.gif",
+          "name": "emag",
+          "role": "fighter"
+        
+      }  
+      
+
 ];
 
 function searchStaff(event) {

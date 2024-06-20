@@ -16,7 +16,7 @@
 
       <main>
         
-        <table  width="900" id="attendance-table" >
+        <table  width="900" border="5" id="attendance-table" >
           <thead>
             <tr>
               <th>Date</th>
@@ -54,53 +54,130 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
           loadAttendanceHistory();
+          clearOldRecords();
+          
 
-          const checkOutButtons = document.querySelectorAll('.out');
+ 
+});
 
-          checkOutButtons.forEach(button => {
-              button.addEventListener('click', function() {
-                  const now = new Date();
-                  const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                  const lastCheckIn = new Date(localStorage.getItem('lastCheckIn'));
-                  const totalHours = ((now - lastCheckIn) / (1000 * 60 * 60)).toFixed(2);
+function checkIn() {
+            const now = new Date();
+            const date = now.toLocaleDateString();
+            const checkInTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const name = "Fatima"; // Get the staff name dynamically as needed
+            const role = "Intern"; // Get the staff role dynamically as needed
 
-                  button.textContent = currentTime;
-                  button.parentElement.nextElementSibling.textContent = totalHours;
+            let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
 
-                  // Update the record in localStorage
-                  let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
-                  const index = attendanceRecords.findIndex(record => record.checkInTime === button.previousElementSibling.textContent);
-                  if (index !== -1) {
-                      attendanceRecords[index].checkOutTime = currentTime;
-                      attendanceRecords[index].totalHours = totalHours;
-                      localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
-                  }
-              });
-          });
-      });
+            // Check if there's already a check-in for today
+            const todayRecord = attendanceRecords.find(record => record.name === name && record.date === date);
+            if (todayRecord) {
+                alert("You've already checked in today!");
+                return;
+            }
 
-      function loadAttendanceHistory() {
-          const attendanceHistory = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
-          const tableBody = document.getElementById('attendance-table').querySelector('tbody');
-          tableBody.innerHTML = '';
+            const newRecord = {
+                date: date,
+                name: name,
+                role: role,
+                checkInTime: checkInTime,
+                checkOutTime: 'N/A',
+                totalHours: '0.00'
+            };
 
-          attendanceHistory.forEach(record => {
-              const newRow = document.createElement('tr');
-              newRow.innerHTML = `
-                  <td><button class="tbutton">${record.date}</button></td>
-                  <td><button class="tbutton">${record.name}</button></td>
-                  <td><button class="tbutton">${record.role}</button></td>
-                  <td><button class="tbutton">${record.checkInTime}</button></td>
-                  <td><button class="out">${record.checkOutTime === 'N/A' ? 'Check-Out' : record.checkOutTime}</button></td>
-                  <td><button class="tbutton">${record.totalHours}</button></td>
-              `;
-              tableBody.appendChild(newRow);
-          });
-      }
-      
+            attendanceRecords.push(newRecord);
+            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+
+            // Reload attendance history
+            loadAttendanceHistory();
+        }
+
+        function handleCheckOut(button) {
+            const now = new Date();
+            const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const userName = button.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
+            const currentDate = now.toLocaleDateString();
+
+            let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+
+            // Find today's record for the user
+            const todayRecord = attendanceRecords.find(record => record.name === userName && record.date === currentDate);
+            if (!todayRecord || todayRecord.checkOutTime !== 'N/A') {
+                alert("You haven't checked in today or you've already checked out!");
+                return;
+            }
+
+            // Calculate total hours and minutes worked
+            const checkInTime = new Date(`${now.toDateString()} ${todayRecord.checkInTime}`);
+            const timeDifference = now - checkInTime;
+            const hoursWorked = Math.floor(timeDifference / (1000 * 60 * 60));
+            const minutesWorked = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const totalHours = `${hoursWorked}:${minutesWorked < 10 ? '0' + minutesWorked : minutesWorked}`;
+
+            // Update the record with check-out time and total hours
+            todayRecord.checkOutTime = currentTime;
+            todayRecord.totalHours = totalHours;
+            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+
+            // Update the button and total hours in the table
+            button.textContent = currentTime;
+            button.parentElement.nextElementSibling.textContent = totalHours;
+
+            // Reload the attendance history
+            loadAttendanceHistory();
+
+            // Show success alert
+            alert("Check-Out successful at " + currentTime);
+        }
+                
+
+
+
+function loadAttendanceHistory() {
+            const attendanceHistory = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+            const tableBody = document.getElementById('attendance-table').querySelector('tbody');
+            tableBody.innerHTML = '';
+
+            attendanceHistory.forEach(record => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td><button class="tbutton">${record.date}</button></td>
+                    <td><button class="tbutton">${record.name}</button></td>
+                    <td><button class="tbutton">${record.role}</button></td>
+                    <td><button class="tbutton">${record.checkInTime}</button></td>
+                    <td><button class="out">${record.checkOutTime === 'N/A' ? 'Check-Out' : record.checkOutTime}</button></td>
+                    <td><button class="tbutton">${record.totalHours}</button></td>
+                `;
+                tableBody.appendChild(newRow);
+
+                // Attach event listener for the check-out button in this row
+                const checkOutButton = newRow.querySelector('.out');
+                checkOutButton.addEventListener('click', function() {
+                    handleCheckOut(checkOutButton);
+                });
+            });
+        }
+
+
+    
+
+        function clearOldRecords() {
+            setInterval(() => {
+                const now = new Date();
+                let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+                attendanceRecords = attendanceRecords.filter(record => {
+                    const recordDate = new Date(record.date);
+                    const timeDiff = (now - recordDate) / (1000 * 60 * 60 * 24);
+                    return timeDiff < 1;
+                });
+
+                localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+                loadAttendanceHistory();
+            }, 3600000); // Check every hour
+        }
       </script>
 
-  <script src="at.js"></script>
+  <script src="attendance.js"></script>
   
     
   </body>

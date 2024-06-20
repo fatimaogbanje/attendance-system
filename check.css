@@ -1,22 +1,14 @@
+/* Base Styles */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
 }
-.loginpage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-size: cover;
-  background-image: url(img/blue\ flame.gif);
-}
 
 .dashboard {
   background-size: contain;
   background: url(img/fram.jpeg);
-  /* background-color: rgb(235,243,245); */
 }
 
 .subdash {
@@ -24,23 +16,19 @@ body {
   flex-direction: column;
   align-items: center;
   width: 670px;
-  
   border-radius: 10px;
   background-image: url(img/downl.jpeg);
-
   background-color: rgb(235, 243, 245);
 }
 
-.staff{
+.staff {
   width: 200px;
 }
-  
 
-.search{
+.search {
   width: 100px;
 }
 
-.loginpage,
 .dashboard,
 .attendancehistory {
   display: flex;
@@ -48,11 +36,9 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  
-  
 }
 
-.attendancehistory{
+.attendancehistory {
   background-image: url(img/bluepaper.jpeg);
   background-size: cover;
 }
@@ -73,7 +59,6 @@ body {
 .logo2 {
   width: 150px;
   margin-top: 20px;
-
   margin-right: 500px;
 }
 
@@ -187,9 +172,12 @@ nav ul li a:hover {
 }
 
 table {
-  /* width: 100%; */
   border-collapse: collapse;
   margin-top: 20px;
+}
+
+tbody {
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 th,
@@ -203,55 +191,106 @@ td {
 thead {
   background: #333;
   color: #fff;
-  font-size: larger
+  font-size: larger;
 }
 
-.out{
+.out {
   height: 40px;
   background-color: red;
   font-size: larger;
   border-radius: 10px;
 }
 
-button{
+button {
   height: 40px;
-  
 }
-.tbutton{
+
+.tbutton {
   background-color: aliceblue;
   border-radius: 5px;
   font-size: larger;
-
 }
 
-.back{
+.back {
   margin-left: 450px;
   margin-top: 20px;
-  
 }
-.adminbtn{
-  float:right;
+
+.adminbtn {
+  float: right;
   margin-bottom: 40px;
   width: 100px;
   border-radius: 5px;
-  
-
 }
 
-.admin{
-  
-  
-  
+.admin {
   margin-top: 10px;
   margin-bottom: 40px;
-
-
-  
-  
-  
-
   text-decoration: none;
-  color:black;
+  color: black;
+}
 
+/* Mobile Devices (up to 600px) */
+@media (max-width: 600px) {
+  .subdash {
+    width: 100%;
+    padding: 10px;
+  }
 
+  .dashboard,
+  .attendancehistory {
+    height: auto;
+  }
+
+  .form {
+    padding: 20px;
+  }
+
+  .logo2 {
+    margin-right: 0;
+  }
+
+  .checkin,
+  .checkout {
+    width: 100%;
+  }
+
+  .profilepicture {
+    width: 150px;
+    height: 150px;
+  }
+
+  .back {
+    margin-left: 0;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav ul li {
+    margin: 5px 0;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 5px;
+  }
+
+  .header,
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header {
+    padding: 10px;
+  }
 }
