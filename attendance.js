@@ -1,33 +1,3 @@
-function updateDateTime() {
-  const now = new Date();
-
-  const dateOptions = {
-    weekday: "long", // Full day name (e.g., "Monday")
-    year: "numeric", // Full year (e.g., "2024")
-    month: "long", // Full month name (e.g., "June")
-    day: "numeric", // Numeric day of the month (e.g., "21")
-  };
-
-  const timeOptions = {
-    hour: "2-digit", // Two-digit hour (e.g., "08" or "20")
-    minute: "2-digit", // Two-digit minute (e.g., "05")
-    second: "2-digit", // Two-digit second (e.g., "09")
-    hour12: false, // 24-hour format
-  };
-
-  const formattedDate = now.toLocaleDateString(undefined, dateOptions);
-  const formattedTime = now.toLocaleTimeString(undefined, timeOptions);
-
-  document.getElementById("current-date").textContent = formattedDate;
-  document.getElementById("current-time").textContent = formattedTime;
-}
-
-// Call the function to update date and time immediately
-updateDateTime();
-
-// Optionally, set an interval to update the date and time every second
-setInterval(updateDateTime, 1000);
-
 document.addEventListener("DOMContentLoaded", function () {
   updateDateTime();
   setInterval(updateDateTime, 1000); // Update the time every second
@@ -78,7 +48,7 @@ function checkIn() {
 
   // Check if there's already a check-in for today
   const todayRecord = attendanceRecords.find(
-    (record) => record.name === userName && record.date === formattedDate
+    (record) => record.name === userName && record.date === currentDate
   );
   if (todayRecord) {
     alert("You've already checked in today!");
@@ -86,7 +56,7 @@ function checkIn() {
   }
 
   // Update last check-in time in the DOM
-  document.getElementById("last-check-in").textContent = formattedTime;
+  document.getElementById("last-check-in").textContent = currentTime;
 
   // Store the current check-in time in localStorage
   localStorage.setItem("lastCheckIn", now);
