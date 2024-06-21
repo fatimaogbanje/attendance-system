@@ -1,41 +1,59 @@
 function updateDateTime() {
-    const now = new Date();
-    document.getElementById('current-date').textContent = now.toLocaleDateString();
-    document.getElementById('current-time').textContent = now.toLocaleTimeString();
+  const now = new Date();
+
+  const dateOptions = {
+    weekday: "long", // Full day name (e.g., "Monday")
+    year: "numeric", // Full year (e.g., "2024")
+    month: "long", // Full month name (e.g., "June")
+    day: "numeric", // Numeric day of the month (e.g., "21")
+  };
+
+  const timeOptions = {
+    hour: "2-digit", // Two-digit hour (e.g., "08" or "20")
+    minute: "2-digit", // Two-digit minute (e.g., "05")
+    second: "2-digit", // Two-digit second (e.g., "09")
+    hour12: false, // 24-hour format
+  };
+
+  const formattedDate = now.toLocaleDateString(undefined, dateOptions);
+  const formattedTime = now.toLocaleTimeString(undefined, timeOptions);
+
+  document.getElementById("current-date").textContent = formattedDate;
+  document.getElementById("current-time").textContent = formattedTime;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    updateDateTime();
-    setInterval(updateDateTime, 1000); // Update the time every second
-    document.getElementById('admin-link').style.display = 'block';
-    document.getElementById('attendance-history-link').style.display = 'block';
-    
+// Call the function to update date and time immediately
+updateDateTime();
+
+// Optionally, set an interval to update the date and time every second
+setInterval(updateDateTime, 1000);
+
+document.addEventListener("DOMContentLoaded", function () {
+  updateDateTime();
+  setInterval(updateDateTime, 1000); // Update the time every second
+  document.getElementById("admin-link").style.display = "block";
+  document.getElementById("attendance-history-link").style.display = "block";
 });
 
 function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-    // Simulate login process
-    if (username === 'user' && password === 'password') {
-        document.querySelector('.login-page').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        document.getElementById('user-name').textContent = 'Fatima'; // Update with actual user info
-    } else {
-        alert('Invalid credentials');
-    }
+  // Simulate login process
+  if (username === "user" && password === "password") {
+    document.querySelector(".login-page").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("user-name").textContent = "Fatima"; // Update with actual user info
+  } else {
+    alert("Invalid credentials");
+  }
 }
 
-
-
-
-
-
 function logout() {
-    document.getElementById('dashboard').style.display = 'none';
-    document.querySelector('.login-page').style.display = 'block';
-     // Re-enable the Check-In button when logging out
-     document.querySelector('.checkin').disabled = false;
+  document.getElementById("dashboard").style.display = "none";
+  document.querySelector(".login-page").style.display = "block";
+  // Re-enable the Check-In button when logging out
+  document.querySelector(".checkin").disabled = false;
 }
 
 // function updateCurrentStaffInfo(userName, userRole, currentDate, currentTime) {
@@ -46,82 +64,100 @@ function logout() {
 // }
 
 function checkIn() {
-    const now = new Date();
-    const userName = document.getElementById('user-name').textContent;
-    const userRole = document.getElementById('user-role').textContent;
-    const currentDate = now.toLocaleDateString();
-    const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
-    let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
-  
-    // Check if there's already a check-in for today
-    const todayRecord = attendanceRecords.find(record => record.name === userName && record.date === currentDate);
-    if (todayRecord) {
-      alert("You've already checked in today!");
-      return;
-    }
-  
-    // Update last check-in time in the DOM
-    document.getElementById('last-check-in').textContent = currentTime;
-  
-    // Store the current check-in time in localStorage
-    localStorage.setItem('lastCheckIn', now);
-  
-    // Create a new attendance record
-    const newRecord = {
-      date: currentDate,
-      name: userName,
-      role: userRole,
-      checkInTime: currentTime,
-      checkOutTime: 'N/A',
-      totalHours: '0.00'
-    };
-  
-    // Add the new record to the attendanceRecords array
-    attendanceRecords.push(newRecord);
-    localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
-  
-    // Reload the attendance history
-    loadAttendanceHistory();
-  
-    // Disable the Check-In button
-    document.querySelector('.checkin').disabled = true;
-  
-    // Show success alert
-    alert("Check-In successful at " + currentTime);
+  const now = new Date();
+  const userName = document.getElementById("user-name").textContent;
+  const userRole = document.getElementById("user-role").textContent;
+  const currentDate = now.toLocaleDateString();
+  const currentTime = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  let attendanceRecords =
+    JSON.parse(localStorage.getItem("attendanceRecords")) || [];
+
+  // Check if there's already a check-in for today
+  const todayRecord = attendanceRecords.find(
+    (record) => record.name === userName && record.date === formattedDate
+  );
+  if (todayRecord) {
+    alert("You've already checked in today!");
+    return;
   }
 
+  // Update last check-in time in the DOM
+  document.getElementById("last-check-in").textContent = formattedTime;
+
+  // Store the current check-in time in localStorage
+  localStorage.setItem("lastCheckIn", now);
+
+  // Create a new attendance record
+  const newRecord = {
+    date: currentDate,
+    name: userName,
+    role: userRole,
+    checkInTime: currentTime,
+    checkOutTime: "N/A",
+    totalHours: "0.00",
+  };
+
+  // Add the new record to the attendanceRecords array
+  attendanceRecords.push(newRecord);
+  localStorage.setItem("attendanceRecords", JSON.stringify(attendanceRecords));
+
+  // Reload the attendance history
+  loadAttendanceHistory();
+
+  // Disable the Check-In button
+  document.querySelector(".checkin").disabled = true;
+
+  // Show success alert
+  alert("Check-In successful at " + currentTime);
+}
+
 function checkOut(button) {
-    const now = new Date();
-    const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    button.textContent = currentTime;
+  const now = new Date();
+  const currentTime = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  button.textContent = currentTime;
 
-    const lastCheckIn = new Date(localStorage.getItem('lastCheckIn'));
-    const totalHours = ((now - lastCheckIn) / (1000 * 60 * 60)).toFixed(2);
-    button.parentElement.nextElementSibling.textContent = totalHours;
+  const lastCheckIn = new Date(localStorage.getItem("lastCheckIn"));
+  const totalHours = ((now - lastCheckIn) / (1000 * 60 * 60)).toFixed(2);
+  button.parentElement.nextElementSibling.textContent = totalHours;
 
-    // Update last check-out time
-    document.getElementById('last-check-out').textContent = currentTime;
-    document.getElementById('total-hours').textContent = `${totalHours} hrs`;
-    
-    // Update the attendance record in localStorage
-    let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
-    const index = attendanceRecords.findIndex(record => record.checkInTime === button.previousElementSibling.textContent);
-    if (index !== -1) {
-        attendanceRecords[index].checkOutTime = currentTime;
-        attendanceRecords[index].totalHours = totalHours;
-        localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
-    }
+  // Update last check-out time
+  document.getElementById("last-check-out").textContent = currentTime;
+  document.getElementById("total-hours").textContent = `${totalHours} hrs`;
+
+  // Update the attendance record in localStorage
+  let attendanceRecords =
+    JSON.parse(localStorage.getItem("attendanceRecords")) || [];
+  const index = attendanceRecords.findIndex(
+    (record) => record.checkInTime === button.previousElementSibling.textContent
+  );
+  if (index !== -1) {
+    attendanceRecords[index].checkOutTime = currentTime;
+    attendanceRecords[index].totalHours = totalHours;
+    localStorage.setItem(
+      "attendanceRecords",
+      JSON.stringify(attendanceRecords)
+    );
+  }
 }
 
 function showAttendanceHistory() {
-    const attendanceHistory = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
-    const tableBody = document.getElementById('attendance-table').querySelector('tbody');
-    tableBody.innerHTML = '';
+  const attendanceHistory =
+    JSON.parse(localStorage.getItem("attendanceRecords")) || [];
+  const tableBody = document
+    .getElementById("attendance-table")
+    .querySelector("tbody");
+  tableBody.innerHTML = "";
 
-    attendanceHistory.forEach(record => {
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
+  attendanceHistory.forEach((record) => {
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
             <td><button class="tbutton">${record.date}</button></td>
             <td><button class="tbutton">${record.name}</button></td>
             <td><button class="tbutton">${record.role}</button></td>
@@ -129,89 +165,79 @@ function showAttendanceHistory() {
             <td><button class="out" onclick="checkOut(this)">Check-Out</button></td>
             <td><button class="tbutton">${record.totalHours}</button></td>
         `;
-        tableBody.appendChild(newRow);
-    });
+    tableBody.appendChild(newRow);
+  });
 
-    document.getElementById('search-form').style.display = 'none';
-    document.getElementById('staff-info').style.display = 'none';
-    document.getElementById('attendance-history').style.display = 'block';
+  document.getElementById("search-form").style.display = "none";
+  document.getElementById("staff-info").style.display = "none";
+  document.getElementById("attendance-history").style.display = "block";
 }
 
-
-  
-
 const staffData = [
-    {
-        "staffId": "001",
-        "profilePic": "img/black girl.jpeg",
-        "name": "Fatima",
-        "role": "Intern"
-    },
-    {
-        "staffId": "002",
-        "profilePic": "img/rob.jpeg",
-        "name": "Mr Ben",
-        "role": "Manager"
-    },
-    {
-        "staffId": "003",
-        "profilePic": "img/tech1.jpeg",
-        "name": "Mr Sly",
-        "role": "Developer"
-    },
-    {
-        "staffId": "004",
-        "profilePic": "img/tech2.jpeg",
-        "name": "Mr Chimdi",
-        "role": "Developer"
-    },
-    {
-      "staffId": "005",
-        "profilePic": "img/tech4.jpeg",
-        "name": "joy",
-        "role": "nails"
-      
-    },
-    {
-    "staffId": "006",
-        "profilePic": "img/chip.jpeg",
-        "name": "rita",
-        "role": "nails"
-    },
-    {
-        "staffId": "007",
-          "profilePic": "img/tech3.jpeg",
-          "name": "pearl",
-          "role": "warrror"
-        
-      },
-      {
-        "staffId": "008",
-          "profilePic": "img/tech.gif",
-          "name": "emag",
-          "role": "fighter"
-        
-      }  
-      
-
+  {
+    staffId: "001",
+    profilePic: "img/black girl.jpeg",
+    name: "Fatima Ogbanje",
+    role: "Intern",
+  },
+  {
+    staffId: "002",
+    profilePic: "img/rob.jpeg",
+    name: "Benard Yusuf",
+    role: "Manager",
+  },
+  {
+    staffId: "003",
+    profilePic: "img/tech1.jpeg",
+    name: "Sylvester Agaba",
+    role: "Developer",
+  },
+  {
+    staffId: "004",
+    profilePic: "img/tech2.jpeg",
+    name: "Chimdindu Uzowulu",
+    role: "Developer",
+  },
+  {
+    staffId: "005",
+    profilePic: "img/tech4.jpeg",
+    name: "joy",
+    role: "nails",
+  },
+  {
+    staffId: "006",
+    profilePic: "img/chip.jpeg",
+    name: "rita",
+    role: "nails",
+  },
+  {
+    staffId: "007",
+    profilePic: "img/tech3.jpeg",
+    name: "pearl",
+    role: "warrror",
+  },
+  {
+    staffId: "008",
+    profilePic: "img/tech.gif",
+    name: "emag",
+    role: "fighter",
+  },
 ];
 
 function searchStaff(event) {
-    event.preventDefault();
-    const staffId = document.getElementById('staff-id').value;
-    const staff = staffData.find(s => s.staffId === staffId);
+  event.preventDefault();
+  const staffId = document.getElementById("staff-id").value;
+  const staff = staffData.find((s) => s.staffId === staffId);
 
-    if (staff) {
-        document.getElementById('profile-picture').src = staff.profilePic;
-        document.getElementById('user-name').textContent = staff.name;
-        document.getElementById('user-role').textContent = staff.role;
-        document.getElementById('staff-info').style.display = 'block';
-        document.getElementById('search-form').style.display = 'none';
-        document.getElementById('admin-link').style.display = 'none';
-        document.getElementById('attendance-history-link').style.display = 'none';
-
-        
-    } else {
-        alert('Staff not found');
-    }
+  if (staff) {
+    document.getElementById("profile-picture").src = staff.profilePic;
+    document.getElementById("user-name").textContent = staff.name;
+    document.getElementById("user-role").textContent = staff.role;
+    document.getElementById("staff-info").style.display = "block";
+    document.getElementById("search-form").style.display = "none";
+    document.getElementById("admin-link").style.display = "none";
+    document.getElementById("attendance-history-link").style.display = "none";
+  } else {
+    alert("Staff not found");
+  }
 }

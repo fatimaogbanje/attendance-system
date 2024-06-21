@@ -1,72 +1,82 @@
 <!DOCTYPE html>
-<html >
-<head>
-    
-    
+<html>
+  <head>
     <title>Attendance System</title>
-    <link rel="stylesheet" href="check.css">
-</head>
-<body>
-    
-
-    
+    <link rel="stylesheet" href="check.css" />
+  </head>
+  <body>
     <div class="dashboard" id="dashboard">
-        <div class="subdash" >
-            <img src="img/wootlab.png" alt="" class="logo2">
-        <header  id="staff-container">
-            <img src="img/blue flower.jpeg" alt="" class="profilepicture" id="profile-picture"> 
-            <div class="profileinfo">
-                <h2 id="user-name">WOOTLAB</h2>
-                <p id="user-role">Attendance System</p> 
-            </div> 
-            <div class="datetime">
-                <p id="current-date">June 7, 2024</p>
-                <p id="current-time">10:30 AM</p>
-            </div>
-        </header> 
+      <div class="subdash">
+        <img src="img/wootlab.png" alt="" class="logo2" />
+        <header id="staff-container">
+          <img
+            src="img/blue flower.jpeg"
+            alt=""
+            class="profilepicture"
+            id="profile-picture"
+          />
+          <div class="profileinfo">
+            <h2 id="user-name">WOOTLAB</h2>
+            <p id="user-role">Attendance System</p>
+          </div>
+          <div class="datetime">
+            <p id="current-date">June 7, 2024</p>
+            <p id="current-time">10:30 AM</p>
+          </div>
+        </header>
 
-        <div >
-            <form id="search-form" onsubmit="searchStaff(event)">
-                <label for="">Staff ID:<input type="search" id="staff-id" name="search" class="staff"> 
-                    <input class="search" type="submit" value="search"> </label>
-            </form>
-            <nav>
-                <ul>
-                    <li><a href="admin.html" id="admin-link" >Admin</a></li>
-                    <li><a href="attendance.html" id="attendance-history-link" onclick="showAttendanceHistory()">Attendance History</a></li>
-                </ul>
-            </nav>
-            
-            
+        <div>
+          <form id="search-form" onsubmit="searchStaff(event)">
+            <label for=""
+              >Staff ID:<input
+                type="search"
+                id="staff-id"
+                name="search"
+                class="staff"
+              />
+              <input class="search" type="submit" value="search" />
+            </label>
+          </form>
+          <nav>
+            <ul>
+              <li><a href="admin.html" id="admin-link">Admin</a></li>
+              <li>
+                <a
+                  href="attendance.html"
+                  id="attendance-history-link"
+                  onclick="showAttendanceHistory()"
+                  >Attendance History</a
+                >
+              </li>
+            </ul>
+          </nav>
         </div>
 
-        <main id="staff-info" style="display: none;">
-            <div class="attendancestatus">
-                <button class="checkin" onclick="checkIn()">Check-In</button>
-                <!-- <button class="checkout" onclick="checkOut()">Check-Out</button> -->
-                <div class="status">
-                    <p>Last Check-In:<span id="last-check-in">N/A</span></p>
-                    <p>Last Check-Out:<span id="last-check-out".>N/A</span> </p>
-                    <p>Total Hours: <span id="total-hours">0.0 hrs</span></p>
-                </div>
+        <main id="staff-info" style="display: none">
+          <div class="attendancestatus">
+            <button class="checkin" onclick="checkIn()">Check-In</button>
+            <!-- <button class="checkout" onclick="checkOut()">Check-Out</button> -->
+            <div class="status">
+              <p>Last Check-In:<span id="last-check-in">N/A</span></p>
+              <p>Last Check-Out:<span id="last-check-out" .>N/A</span></p>
+              <p>Total Hours: <span id="total-hours">0.0 hrs</span></p>
             </div>
+          </div>
 
-            <nav>
-                <ul>
-                    <li><a href="#" >Home</a></li>
-                    <!-- <li><a href="attendance.html" id="attendance">Attendance History</a></li> -->
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="index.html" onclick="logout()">Logout</a></li>
-                </ul>
-            </nav>
+          <nav>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <!-- <li><a href="attendance.html" id="attendance">Attendance History</a></li> -->
+              <li><a href="#">Settings</a></li>
+              <li><a href="index.html" onclick="logout()">BACK</a></li>
+            </ul>
+          </nav>
         </main>
-    </div>
+      </div>
     </div>
     <!-- <script src="check.js"></script> -->
 
     <script src="attendance.js"></script>
     <script src="app.js"></script>
-
-   
-</body>
+  </body>
 </html>
