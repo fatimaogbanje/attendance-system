@@ -1,3 +1,11 @@
+function updateDateTime() {
+  const now = new Date();
+  document.getElementById("current-date").textContent =
+    now.toLocaleDateString();
+  document.getElementById("current-time").textContent =
+    now.toLocaleTimeString();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   updateDateTime();
   setInterval(updateDateTime, 1000); // Update the time every second
@@ -165,7 +173,7 @@ const staffData = [
   {
     staffId: "004",
     profilePic: "img/tech2.jpeg",
-    name: "Chimdindu Uzowulu",
+    name: "Chimdindu u",
     role: "Developer",
   },
   {
