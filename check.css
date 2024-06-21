@@ -199,6 +199,7 @@ thead {
   background-color: red;
   font-size: larger;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 button {
