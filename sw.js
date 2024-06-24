@@ -8,7 +8,14 @@ const urlsToCache = [
   "/app.js",
   "/admin.js",
   "/check.css",
-  
+  "/attend.js",
+  "/black girl.jpeg",
+  "/img/blue flower.jpeg",
+  "/img/bluepaper.jpeg",
+  "/img/downl.jpeg",
+  "/img/fram.jpeg",
+  "/img/rob.jpeg",
+  "/img/wootlab.png",
 ];
 
 // Install event
