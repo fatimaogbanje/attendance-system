@@ -90,53 +90,6 @@
           }
         });
       }
-
-      //   self.addEventListener("fetch", (event) => {
-      //     const destination = event.request.destination;
-
-      //     switch (destination) {
-      //       case "style":
-      //       case "script":
-      //       case "document":
-      //       case "image": {
-      //         event.respondWith(
-      //           caches
-      //             .match(event.request)
-      //             .then((cachedResponse) => {
-      //               return (
-      //                 cachedResponse ||
-      //                 fetch(event.request).then((networkResponse) => {
-      //                   return caches.open("dynamic-cache").then((cache) => {
-      //                     cache.put(event.request, networkResponse.clone());
-      //                     return networkResponse;
-      //                   });
-      //                 })
-      //               );
-      //             })
-      //             .catch(() => {
-      //               // Handle cases where both the network and cache are unavailable (e.g., offline)
-      //               if (destination === "image") {
-      //                 return caches.match("/fallback-image.png"); // Provide a fallback image if available
-      //               }
-      //             })
-      //         );
-      //         return;
-      //       }
-      //       case "font": {
-      //         event.respondWith(
-      //           caches.match(event.request).then((cachedResponse) => {
-      //             return cachedResponse;
-      //           })
-      //         );
-      //         return;
-      //       }
-      //       default: {
-      //         event.respondWith(fetch(event.request));
-      //         return;
-      //       }
-      //     }
-      //   });
-      //
     </script>
 
     <script src="attendance.js"></script>

@@ -1,9 +1,12 @@
 function updateDateTime() {
   const now = new Date();
-  document.getElementById("current-date").textContent =
-    now.toLocaleDateString();
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  document.getElementById("current-date").textContent = now.toLocaleDateString(
+    "en-GB",
+    options
+  ); // Formats date as DD/MM/YYYY
   document.getElementById("current-time").textContent =
-    now.toLocaleTimeString();
+    now.toLocaleTimeString(); // Formats time as HH:MM:SS
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -34,18 +37,12 @@ function logout() {
   document.querySelector(".checkin").disabled = false;
 }
 
-// function updateCurrentStaffInfo(userName, userRole, currentDate, currentTime) {
-//     document.getElementById('user-name').textContent = userName;
-//     document.getElementById('user-role').textContent = userRole;
-//     document.getElementById('current-date').textContent = currentDate;
-//     document.getElementById('current-time').textContent = currentTime;
-// }
-
 function checkIn() {
   const now = new Date();
   const userName = document.getElementById("user-name").textContent;
   const userRole = document.getElementById("user-role").textContent;
-  const currentDate = now.toLocaleDateString();
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  const currentDate = now.toLocaleDateString("en-GB", options);
   const currentTime = now.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
@@ -104,12 +101,12 @@ function checkOut(button) {
   button.textContent = currentTime;
 
   const lastCheckIn = new Date(localStorage.getItem("lastCheckIn"));
-  const totalHours = ((now - lastCheckIn) / (1000 * 60 * 60 * 60)).toFixed(2);
+  const totalHours = ((now - lastCheckIn) / (1000 * 60 * 60)).toFixed(2);
   button.parentElement.nextElementSibling.textContent = totalHours;
 
   // Update last check-out time
   document.getElementById("last-check-out").textContent = currentTime;
-  document.getElementById("total-hours").textContent = totalHours + hrs;
+  document.getElementById("total-hours").textContent = `${totalHours} hrs`;
 
   // Update the attendance record in localStorage
   let attendanceRecords =
@@ -137,14 +134,14 @@ function showAttendanceHistory() {
 
   attendanceHistory.forEach((record) => {
     const newRow = document.createElement("tr");
-    newRow.innerHTML = ` 
-            <td><button class="tbutton">${record.date}</button></td>
-            <td><button class="tbutton">${record.name}</button></td>
-            <td><button class="tbutton">${record.role}</button></td>
-            <td><button class="tbutton">${record.checkInTime}</button></td>
-            <td><button class="out" onclick="checkOut(this)">Check-Out</button></td>
-            <td><button class="tbutton">${record.totalHours}</button></td>
-        `;
+    newRow.innerHTML = `
+              <td><button class="tbutton">${record.date}</button></td>
+              <td><button class="tbutton">${record.name}</button></td>
+              <td><button class="tbutton">${record.role}</button></td>
+              <td><button class="tbutton">${record.checkInTime}</button></td>
+              <td><button class="out" onclick="checkOut(this)">Check-Out</button></td>
+              <td><button class="tbutton">${record.totalHours}</button></td>
+          `;
     tableBody.appendChild(newRow);
   });
 

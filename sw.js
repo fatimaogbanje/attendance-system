@@ -7,6 +7,7 @@ const urlsToCache = [
   "/check.json",
   "/admin.js",
   "/check.css",
+
   "/fram.jpeg",
   "/img/black girl.jpeg",
   "/img/blue flower.jpeg",
@@ -57,19 +58,14 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("fetch", function (event) {
   event.respondWith(
     caches.match(event.request).then(function (response) {
-      // Cache hit - return the response from the cached version
       if (response) {
         return response;
       }
-      // Cache miss - fetch from the network
       return fetch(event.request).then(function (response) {
-        // Check if we received a valid response
         if (!response || response.status !== 200 || response.type !== "basic") {
           return response;
         }
-        // Clone the response
         var responseToCache = response.clone();
-        // Open the cache and put the response in it
         caches.open(CACHE_NAME).then(function (cache) {
           cache.put(event.request, responseToCache);
         });

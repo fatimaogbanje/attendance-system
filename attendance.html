@@ -54,6 +54,14 @@
       document.addEventListener("DOMContentLoaded", function () {
         loadAttendanceHistory();
         clearOldRecords();
+
+        // Bind event listeners for check-in and search form submission
+        document
+          .getElementById("check-in-btn")
+          .addEventListener("click", checkIn);
+        document
+          .getElementById("search-form")
+          .addEventListener("submit", searchStaff);
       });
 
       function checkIn() {
@@ -62,9 +70,10 @@
         const checkInTime = now.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
+          second: "2-digit",
         });
-        const name = "Fatima"; // Get the staff name dynamically as needed
-        const role = "Intern"; // Get the staff role dynamically as needed
+        const name = document.getElementById("user-name").textContent;
+        const role = document.getElementById("user-role").textContent;
 
         let attendanceRecords =
           JSON.parse(localStorage.getItem("attendanceRecords")) || [];
@@ -102,6 +111,7 @@
         const currentTime = now.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
+          second: "2-digit",
         });
         const userName = button
           .closest("tr")
@@ -116,6 +126,7 @@
         const todayRecord = attendanceRecords.find(
           (record) => record.name === userName && record.date === currentDate
         );
+
         if (!todayRecord || todayRecord.checkOutTime !== "N/A") {
           alert("You haven't checked in today or you've already checked out!");
           return;
@@ -130,9 +141,7 @@
         const minutesWorked = Math.floor(
           (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
         );
-        const totalHours = `${hoursWorked}:${
-          minutesWorked < 10 ? "0" + minutesWorked : minutesWorked
-        }`;
+        const totalHours = `${hoursWorked}.${minutesWorked}`;
 
         // Update the record with check-out time and total hours
         todayRecord.checkOutTime = currentTime;
@@ -164,57 +173,33 @@
         attendanceHistory.forEach((record) => {
           const newRow = document.createElement("tr");
           newRow.innerHTML = `
-                    <td><button class="tbutton">${record.date}</button></td>
-                    <td><button class="tbutton">${record.name}</button></td>
-                    <td><button class="tbutton">${record.role}</button></td>
-                    <td><button class="tbutton">${
-                      record.checkInTime
-                    }</button></td>
-                    <td><button class="out">${
-                      record.checkOutTime === "N/A"
-                        ? "Check-Out"
-                        : record.checkOutTime
-                    }</button></td>
-                    <td><button class="tbutton">${
-                      record.totalHours
-                    }</button></td>
-                `;
-          tableBody.appendChild(newRow);
+      <td><button class="tbutton">${record.date}</button></td>
+      <td><button class="tbutton">${record.name}</button></td>
+      <td><button class="tbutton">${record.role}</button></td>
+      <td><button class="tbutton">${record.checkInTime}</button></td>
+      <td><button class="out">${
+        record.checkOutTime === "N/A" ? "Check-Out" : record.checkOutTime
+      }</button></td>
+      <td><button class="tbutton">${record.totalHours}</button></td>
+    `;
 
           // Attach event listener for the check-out button in this row
           const checkOutButton = newRow.querySelector(".out");
           checkOutButton.addEventListener("click", function () {
             handleCheckOut(checkOutButton);
           });
+
+          tableBody.appendChild(newRow);
         });
       }
-
-      // function clearOldRecords() {
-      //   setInterval(() => {
-      //     const now = new Date();
-      //     let attendanceRecords =
-      //       JSON.parse(localStorage.getItem("attendanceRecords")) || [];
-      //     attendanceRecords = attendanceRecords.filter((record) => {
-      //       const recordDate = new Date(record.date);
-      //       const timeDiff = (now - recordDate) / (1000 * 60 * 60 * 24);
-      //       return timeDiff < 1;
-      //     });
-
-      //     localStorage.setItem(
-      //       "attendanceRecords",
-      //       JSON.stringify(attendanceRecords)
-      //     );
-      //     loadAttendanceHistory();
-      //   }, 3600000); // Check every hour
-      // }
 
       function clearOldRecords() {
         function scheduleNextClear() {
           const now = new Date();
           let next12am = new Date();
-          next12am.setHours(0, 0, 0, 0); // Set time to 5 PM today
+          next12am.setHours(0, 0, 0, 0); // Set time to 5 AM today
 
-          // If it's already past 5 PM today, schedule for 5 PM tomorrow
+          // If it's already past 5 AM today, schedule for 5 AM tomorrow
           if (now >= next12am) {
             next12am.setDate(next12am.getDate() + 1);
           }
@@ -241,6 +226,8 @@
             "attendanceRecords",
             JSON.stringify(attendanceRecords)
           );
+
+          // Reload attendance history after clearing old records
           loadAttendanceHistory();
         }
 
