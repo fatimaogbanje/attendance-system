@@ -178,30 +178,6 @@ const staffData = [
     name: "Chimdindu u",
     role: "Developer",
   },
-  {
-    staffId: "005",
-    profilePic: "img/tech4.jpeg",
-    name: "joy",
-    role: "nails",
-  },
-  {
-    staffId: "006",
-    profilePic: "img/chip.jpeg",
-    name: "rita",
-    role: "nails",
-  },
-  {
-    staffId: "007",
-    profilePic: "img/tech3.jpeg",
-    name: "pearl",
-    role: "warrror",
-  },
-  {
-    staffId: "008",
-    profilePic: "img/tech.gif",
-    name: "emag",
-    role: "fighter",
-  },
 ];
 
 function searchStaff(event) {
