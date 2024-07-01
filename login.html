@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Attendance System</title>
+    <link rel="stylesheet" href="check.css" />
+  </head>
+  <body>
+    <div class="dashboard" id="dashboard">
+      <div class="subdash">
+        <img src="img/wootlab.png" alt="" class="logo2" />
+        <header id="staff-container">
+          <img
+            src="img/blue flower.jpeg"
+            alt=""
+            class="profilepicture"
+            id="profile-picture"
+          />
+          <div class="profileinfo">
+            <h2 id="user-name">WELCOME ADMIN</h2>
+            <p id="user-role">Enter Your ID</p>
+          </div>
+
+          <div>
+            <form id="search-form" onsubmit="searchStaff(event)">
+              <label for="admin-id"
+                >Admin:
+                <input
+                  type="search"
+                  id="admin-id"
+                  name="search"
+                  class="staff"
+                />
+                <input class="search" type="submit" value="Enter" />
+              </label>
+            </form>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <script>
+      const adminData = [
+        {
+          adminId: "012",
+        },
+      ];
+
+      function searchStaff(event) {
+        event.preventDefault();
+        const adminId = document.getElementById("admin-id").value;
+        const admin = adminData.find((a) => a.adminId === adminId);
+        if (admin) {
+          window.location.href = "admin.html";
+        } else {
+          alert("Invalid Admin ID. Please try again.");
+        }
+      }
+    </script>
+  </body>
+</html>

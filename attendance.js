@@ -1,7 +1,18 @@
+// function updateDateTime() {
+//   const now = new Date();
+//   document.getElementById("current-date").textContent =
+//     now.toLocaleDateString();
+//   document.getElementById("current-time").textContent =
+//     now.toLocaleTimeString();
+// }
+
 function updateDateTime() {
   const now = new Date();
-  document.getElementById("current-date").textContent =
-    now.toLocaleDateString();
+  const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+  document.getElementById("current-date").textContent = now.toLocaleDateString(
+    "en-GB",
+    options
+  );
   document.getElementById("current-time").textContent =
     now.toLocaleTimeString();
 }

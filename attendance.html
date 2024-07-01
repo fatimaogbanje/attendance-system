@@ -51,15 +51,16 @@
     </div>
 
     <script>
+      console.log("HEREEEEEEEEE2222222");
       document.addEventListener("DOMContentLoaded", function () {
+        console.log("HEREEEEEEEEE");
         loadAttendanceHistory();
         clearOldRecords();
-
         // Bind event listeners for check-in and search form submission
         document
           .getElementById("check-in-btn")
-          .addEventListener("click", checkIn);
-        document
+          //   .addEventListener("click", checkIn);
+          // document
           .getElementById("search-form")
           .addEventListener("submit", searchStaff);
       });
@@ -198,7 +199,8 @@
           const now = new Date();
           let next12am = new Date();
           next12am.setHours(0, 0, 0, 0); // Set time to 12 AM today
-
+          console.log("Now time is ", now);
+          console.log("nextTime time is ", next12am);
           // If it's already past 12 AM today, schedule for 12 AM tomorrow
           if (now >= next12am) {
             next12am.setDate(next12am.getDate() + 1);
