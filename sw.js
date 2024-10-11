@@ -7,7 +7,7 @@ const urlsToCache = [
   "/check.json",
   "/admin.js",
   "/check.css",
-
+  "/login.html",
   "/fram.jpeg",
   "/img/black girl.jpeg",
   "/img/blue flower.jpeg",

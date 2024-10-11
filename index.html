@@ -74,7 +74,34 @@
         </main>
       </div>
     </div>
-    <!-- <script src="check.js"></script> -->
+   <div id="chatbot-root"></div> <!-- The div where the chatbot will appear -->
+
+<script>
+  (function() {
+    var script = document.createElement('script');
+    script.src = "/chatbot-widget.js"; // The URL to your bundled file
+    script.async = true;
+    script.onload = function() {
+      if (window.ChatbotWidget) {
+        // Initialize the chatbot with configuration
+        ChatbotWidget.init({
+          buttonColor: "#007bff",
+          chatBackground: "#fff",
+          userMessageColor: "#007bff",
+          botMessageColor: "#333",
+          knowledgeBase: "https://example.com/knowledge-base", // Customize as per your need
+          targetElementId: 'chatbot-root' // ID of the element to attach the chatbot
+        });
+      } else {
+        console.error('ChatbotWidget failed to load.');
+      }
+    };
+    document.body.appendChild(script);
+  })();
+</script>
+
+    
+    
     <script>
       if ("serviceWorker" in navigator && !navigator.serviceWorker.controller) {
         console.log(navigator.serviceWorker.controller, " Is controller");
